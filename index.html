@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello!</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>Simon Says Game </h1>
+    <h2>
+      (Lights and Sounds Remix)
+    </h2>
+
+    <p>
+      Welcome to the game! Watch the audiovisual sequence and then repeat it
+      back after it finishes.
+    </p>
+    <button id="startBtn" onclick="startGame()">Start</button>
+    <button class="hidden" id="stopBtn" onclick="stopGame()">Stop</button>
+
+    <div id="gameButtonArea">
+      <button onclick="guess(1)" id="btn1" onmousedown="startTone(1)" onmouseup="stopTone()">
+      <img id="img1" class="hidden" src="https://cdn.glitch.com/02ab8221-c921-4dea-94d2-727bf91fa6ca%2Fbeast_boy.jpeg?v=1614205735255">  
+      </button>
+      <button onclick="guess(2)" id="btn2" onmousedown="startTone(2)" onmouseup="stopTone()">
+        <img id="img2" class="hidden" src="https://cdn.glitch.com/02ab8221-c921-4dea-94d2-727bf91fa6ca%2Fdory_fish.jpg?v=1614205735437">
+      </button>
+      <button onclick="guess(3)" id="btn3" onmousedown="startTone(3)" onmouseup="stopTone()">
+      <img id="img3" class="hidden" src="https://cdn.glitch.com/02ab8221-c921-4dea-94d2-727bf91fa6ca%2Fblossom_powerpuff.jpg?v=1614205735319">
+      </button>
+      <button onclick="guess(4)" id="btn4" onmousedown="startTone(4)" onmouseup="stopTone()">
+      <img id="img4" class="hidden" src="https://cdn.glitch.com/02ab8221-c921-4dea-94d2-727bf91fa6ca%2Fpikachu.jpg?v=1614205735410"> 
+      </button>
+    </div>
+
+    
+  </body>
+</html>
