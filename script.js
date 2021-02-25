@@ -9,14 +9,14 @@ var pattern = [2, 2, 4, 3, 2, 1, 2, 4];
 var progress = 0;
 var gamePlaying = false;
 var tonePlaying = false;
-var volume = 0.5;  //must be between 0.0 and 1.0
+var volume = 0.5; //must be between 0.0 and 1.0
 var guessCounter = 0;
 
 function startGame() {
   //initialize game variables
   progress = 0;
   gamePlaying = true;
-  generateNewGamePattern()
+  generateNewGamePattern();
   // swap the Start and Stop buttons
   document.getElementById("startBtn").classList.add("hidden");
   document.getElementById("stopBtn").classList.remove("hidden");
@@ -24,7 +24,7 @@ function startGame() {
 }
 
 function stopGame() {
-  // stop the game, hide the stop button and show 
+  // stop the game, hide the stop button and show
   // the start button
   gamePlaying = false;
   // swap the Start and Stop buttons
@@ -40,71 +40,72 @@ const freqMap = {
   2: 233.08,
   3: 261.6,
   4: 277.18
+};
+function playTone(btn, len) {
+  o.frequency.value = freqMap[btn];
+  g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
+  tonePlaying = true;
+  setTimeout(function() {
+    stopTone();
+  }, len);
 }
-function playTone(btn,len){ 
-  o.frequency.value = freqMap[btn]
-  g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-  tonePlaying = true
-  setTimeout(function(){
-    stopTone()
-  },len)
-}
-function startTone(btn){
-  if(!tonePlaying){
-    o.frequency.value = freqMap[btn]
-    g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-    tonePlaying = true
+function startTone(btn) {
+  if (!tonePlaying) {
+    o.frequency.value = freqMap[btn];
+    g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
+    tonePlaying = true;
   }
 }
-function stopTone(){
-    g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
-    tonePlaying = false
+function stopTone() {
+  g.gain.setTargetAtTime(0, context.currentTime + 0.05, 0.025);
+  tonePlaying = false;
 }
 
 //Page Initialization
 // Init Sound Synthesizer
-var context = new AudioContext()
-var o = context.createOscillator()
-var g = context.createGain()
-g.connect(context.destination)
-g.gain.setValueAtTime(0,context.currentTime)
-o.connect(g)
-o.start(0)
+var context = new AudioContext();
+var o = context.createOscillator();
+var g = context.createGain();
+g.connect(context.destination);
+g.gain.setValueAtTime(0, context.currentTime);
+o.connect(g);
+o.start(0);
 
-function lightButton(btn){
-  document.getElementById("btn"+btn).classList.add("lit");
+function lightButton(btn) {
+  document.getElementById("btn" + btn).classList.add("lit");
 }
-function clearButton(btn){
-  document.getElementById("btn"+btn).classList.remove("lit");
+function clearButton(btn) {
+  document.getElementById("btn" + btn).classList.remove("lit");
 }
 
-function playSingleClue(btn){
-  if(gamePlaying){
+function playSingleClue(btn) {
+  if (gamePlaying) {
     console.log(btn);
     presentImage(btn);
     setTimeout(lightButton(btn), clueHoldTime);
-    playTone(btn,clueHoldTime);
-    setTimeout(clearButton,clueHoldTime,btn);
+    playTone(btn, clueHoldTime);
+    setTimeout(clearButton, clueHoldTime, btn);
   }
 }
 
-function playClueSequence(){
+function playClueSequence() {
   guessCounter = 0;
   let delay = nextClueWaitTime; //set delay to initial wait time
-  for(let i=0; i <= progress; i++){ // for each clue that is revealed so far
-    console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
-    setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
-    delay += clueHoldTime 
+  for (let i = 0; i <= progress; i++) {
+    // for each clue that is revealed so far
+    console.log("play single clue: " + pattern[i] + " in " + delay + "ms");
+    setTimeout(playSingleClue, delay, pattern[i]); // set a timeout to play that clue
+    delay += clueHoldTime;
     delay += cluePauseTime;
   }
 }
 
-function loseGame(){
+function loseGame() {
   stopGame();
   alert("Game Over. You lost.");
 }
 
-function winGame(){
+function winGame() {
   stopGame();
   alert("Game Over. Congratulations. You beat the game!");
 }
@@ -124,10 +125,10 @@ function presentImage(btn) {
   }, 700);
 }
 
-function guess(btn){
+function guess(btn) {
   presentImage(btn);
   console.log("user guessed: " + btn);
-  if(!gamePlaying){
+  if (!gamePlaying) {
     return;
   }
 
@@ -138,23 +139,20 @@ function guess(btn){
     if (guessCounter === progress) {
       if (progress === pattern.length - 1) {
         winGame();
-      }
-      else {
+      } else {
         progress += 1;
         playClueSequence();
       }
-    }
-    else {
+    } else {
       guessCounter += 1;
     }
-  }
-  else {
+  } else {
     loseGame();
   }
 }
 
 function generateNewGamePattern() {
   for (let i = 0; i < pattern.length; ++i) {
-    pattern[i] = Math.floor(Math.random() * (numButtons - 1) + 1)
+    pattern[i] = Math.floor(Math.random() * (numButtons - 1) + 1);
   }
 }
